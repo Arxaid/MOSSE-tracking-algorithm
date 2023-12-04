@@ -7,4 +7,5 @@
 
 ### Reference:
 [1] [Visual object tracking using adaptive correlation filters](https://ieeexplore.ieee.org/document/5539960/)
+
 [2] [mosse-object-tracking](https://github.com/TianhongDai/mosse-object-tracking)
