@@ -15,6 +15,5 @@ parse.add_argument('--record', action='store_true', help='record the frames')
 
 if __name__ == '__main__':
     args = parse.parse_args()
-    img_path = 'datasets/surfer/'
-    tracker = mosse(args, img_path)
-    tracker.start_tracking()
+    tracker = mosse(args)
+    tracker.tracking()
