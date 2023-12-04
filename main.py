@@ -1,4 +1,9 @@
-from mosse import mosse
+# This file is part of the MOSSE Tracking Algorithm project
+#
+# Copyright (c) 2018 Tianhong Dai
+# Copyright (c) 2023 Vladislav Sosedov
+
+from src.mosse import mosse
 import argparse
 
 parse = argparse.ArgumentParser()

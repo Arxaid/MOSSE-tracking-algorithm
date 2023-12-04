@@ -1,3 +1,8 @@
+# This file is part of the MOSSE Tracking Algorithm project
+#
+# Copyright (c) 2018 Tianhong Dai
+# Copyright (c) 2023 Vladislav Sosedov
+
 import numpy as np
 import cv2
 import os
