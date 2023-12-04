@@ -1,6 +1,8 @@
 # MOSSE Tracking Algorithm
 ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)
 
+Robust visual object tracking algorithm using adaptive correlation filters.
+
 ### Requirements
 - python - 3.9.6
 - opencv-python - 4.8.0
