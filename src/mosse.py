@@ -47,7 +47,6 @@ class mosse:
 
         if self.args.mode == 0:
             init_gt = cv2.selectROI('MOSSE tracking algorithm ', init_img, False, False)
-            print(init_gt)
         if self.args.mode == 1:
             reference_image = cv2.imread('reference/target_mark.png')
             heatmap = cv2.matchTemplate(init_img, reference_image, cv2.TM_CCOEFF_NORMED)
