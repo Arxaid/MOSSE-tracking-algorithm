@@ -6,6 +6,7 @@
 import numpy as np
 import cv2
 import os
+from datetime import datetime
 from src.utils import linear_mapping, pre_process, random_warp
 
 class mosse:
@@ -21,7 +22,7 @@ class mosse:
         2. sigma: float -- Sigma value (default = 100);
         3. num_pretrain: int -- Number of pretrain (default = 128);
         4. rotate: bool -- Rotate image during pre-training;
-        5. store: bool -- Record the frames into folder.
+        5. mode: bool -- ROI search mode. 0 - manual, 1 - correlation search algorithm.
         """
         self.args = args
         # Check your webcam index first:
@@ -35,6 +36,8 @@ class mosse:
         3. Tracking process and its visualization.
         """
         frame_idx = int(0)
+        startTimestamp = datetime.now().timestamp()
+
         cv2.namedWindow('MOSSE tracking algorithm ')
         init_ret, init_img = self.cam.read()
         assert init_ret, 'Failed to capture image from current webcam.'
@@ -42,7 +45,16 @@ class mosse:
         init_frame = cv2.cvtColor(init_img, cv2.COLOR_BGR2GRAY)
         init_frame = init_frame.astype(np.float32)
 
-        init_gt = cv2.selectROI('MOSSE tracking algorithm ', init_img, False, False)
+        if self.args.mode == 0:
+            init_gt = cv2.selectROI('MOSSE tracking algorithm ', init_img, False, False)
+            print(init_gt)
+        if self.args.mode == 1:
+            reference_image = cv2.imread('reference/target_mark.png')
+            heatmap = cv2.matchTemplate(init_img, reference_image, cv2.TM_CCOEFF_NORMED)
+            h, w = reference_image.shape[:-1]
+            y, x = np.unravel_index(np.argmax(heatmap), heatmap.shape)
+            init_gt = (x, y, x+w, y+h)
+        
         init_gt = np.array(init_gt).astype(np.int64)
 
         response_map = self._get_gauss_response(init_frame, init_gt)
@@ -96,6 +108,8 @@ class mosse:
             frame_idx += 1
             k = cv2.waitKey(1)
             if k%256 == 27:
+                endTimestamp = datetime.now().timestamp()
+                print(f'FPS: {(endTimestamp - startTimestamp)/frame_idx * 1000}')
                 break
 
     def _pre_training(self, init_frame, G):
